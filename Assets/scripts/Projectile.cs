@@ -4,25 +4,21 @@ public class Projectile : MonoBehaviour
 {
     public float speed = 20f;
     public float damage = 10f;
-    public float lifeTime = 5f;
+    public float lifetime = 5f;
 
     private Transform target;
-    private Troop shooterTroop;
+    private Troop shooter;
     private bool hasHit = false;
 
-    public void Initialize(Transform enemy, Troop shooter)
+    public void Initialize(Transform enemy, Troop shooterTroop)
     {
         target = enemy;
-        shooterTroop = shooter;
+        shooter = shooterTroop;
 
-        // Face the target on spawn (aim near chest height)
         if (target != null)
-        {
             transform.LookAt(target.position + Vector3.up * 1.2f);
-        }
 
-        // Auto-destroy after some time to avoid clutter
-        Destroy(gameObject, lifeTime);
+        Destroy(gameObject, lifetime);
     }
 
     void Update()
@@ -35,17 +31,13 @@ public class Projectile : MonoBehaviour
             return;
         }
 
-        // Move toward target each frame
-        Vector3 targetPosition = target.position + Vector3.up * 1.2f;
-        Vector3 direction = (targetPosition - transform.position).normalized;
-        transform.position += direction * speed * Time.deltaTime;
+        Vector3 targetPos = target.position + Vector3.up * 1.2f;
+        Vector3 dir = (targetPos - transform.position).normalized;
 
-        // Rotate arrow to face travel direction
-        if (direction != Vector3.zero)
-            transform.rotation = Quaternion.LookRotation(direction);
+        transform.position += dir * speed * Time.deltaTime;
+        transform.rotation = Quaternion.LookRotation(dir);
 
-        // Check if close enough to count as a hit
-        if (Vector3.Distance(transform.position, targetPosition) < 0.4f)
+        if (Vector3.Distance(transform.position, targetPos) < 0.4f)
         {
             HitTarget();
         }
@@ -58,34 +50,40 @@ public class Projectile : MonoBehaviour
 
         if (target != null)
         {
-            // Confirm it's an enemy before applying damage
-            if (target.CompareTag("EnemyTroop"))
+            // ✅ If the target has Troop component & not same team → damage
+            Troop t = target.GetComponent<Troop>();
+            if (t != null && t.tag != shooter.tag)
             {
-                Troop enemyTroop = target.GetComponent<Troop>();
-                if (enemyTroop != null && enemyTroop != shooterTroop)
-                {
-                    enemyTroop.TakeDamage(damage);
-                }
+                t.TakeDamage(damage);
+            }
+
+            // ✅ If the target is a Base (enemy base)
+            Base baseObj = target.GetComponent<Base>();
+            if (baseObj != null && target.tag != shooter.tag)
+            {
+                baseObj.TakeDamage(damage);
             }
         }
 
-        // (Optional) Add particle or sound here for hit feedback
         Destroy(gameObject);
     }
 
-    // Optional physics trigger (for backup detection)
     private void OnTriggerEnter(Collider other)
     {
         if (hasHit) return;
 
-        if (other.CompareTag("EnemyTroop"))
+        Troop t = other.GetComponent<Troop>();
+        if (t != null && t.tag != shooter.tag)
         {
-            Troop enemy = other.GetComponent<Troop>();
-            if (enemy != null && enemy != shooterTroop)
-            {
-                enemy.TakeDamage(damage);
-            }
+            t.TakeDamage(damage);
+            hasHit = true;
+            Destroy(gameObject);
+        }
 
+        Base b = other.GetComponent<Base>();
+        if (b != null && other.tag != shooter.tag)
+        {
+            b.TakeDamage(damage);
             hasHit = true;
             Destroy(gameObject);
         }

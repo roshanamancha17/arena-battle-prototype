@@ -6,29 +6,35 @@ public class Troop : MonoBehaviour
     [Header("Stats")]
     public float health = 100f;
     public float attackDamage = 10f;
-    public float attackRange = 2f;
+    public float attackRange = 3f;
     public float attackRate = 1f;
 
-    [Header("Archer Settings")]
+    [Header("Troop Type")]
     public bool isArcher = false;
+
+    [Header("Archer Settings")]
     public GameObject projectilePrefab;
     public Transform shootPoint;
 
+    [Header("Team Settings")]
+    public string enemyTroopTag = "EnemyTroop";
+    public string enemyBaseTag = "EnemyBase";
+    public string friendlyTag = "PlayerTroop";
+
     [Header("Targets")]
-    public Transform targetBase;
+    public Transform targetBase; // assign in inspector
 
     private NavMeshAgent agent;
     private float nextAttackTime = 0f;
-    private Troop currentTarget;
+    private Transform currentTarget;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
 
-        // Safety check
         if (agent == null)
         {
-            Debug.LogError($"{gameObject.name} has no NavMeshAgent! Please add one.");
+            Debug.LogError($"{gameObject.name} missing NavMeshAgent!");
             return;
         }
 
@@ -40,69 +46,82 @@ public class Troop : MonoBehaviour
     {
         if (agent == null) return;
 
-        // Destroy when dead
+        // Death
         if (health <= 0f)
         {
             Destroy(gameObject);
             return;
         }
 
-        // Find a target if none exists
+        // If no current target → find one
         if (currentTarget == null)
         {
             FindNearestEnemy();
+            if (currentTarget == null && targetBase != null)
+                agent.SetDestination(targetBase.position);
         }
-        else
-        {
-            float distance = Vector3.Distance(transform.position, currentTarget.transform.position);
 
-            // In range → attack
+        // Handle combat/movement
+        if (currentTarget != null)
+        {
+            float distance = Vector3.Distance(transform.position, currentTarget.position);
+
             if (distance <= attackRange)
             {
                 agent.isStopped = true;
 
-                // Attack on cooldown
                 if (Time.time >= nextAttackTime)
                 {
-                    Attack(currentTarget);
+                    AttackTarget();
                     nextAttackTime = Time.time + 1f / attackRate;
                 }
 
-                // Rotate to face enemy smoothly
-                Vector3 lookPos = currentTarget.transform.position - transform.position;
-                lookPos.y = 0;
-                if (lookPos != Vector3.zero)
-                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookPos), Time.deltaTime * 5);
+                // Face target
+                Vector3 dir = currentTarget.position - transform.position;
+                dir.y = 0;
+                if (dir != Vector3.zero)
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 5f);
             }
             else
             {
                 agent.isStopped = false;
-                agent.SetDestination(currentTarget.transform.position);
+                agent.SetDestination(currentTarget.position);
             }
         }
     }
 
-    void Attack(Troop enemy)
-{
-    if (enemy == null) return;
-
-    if (isArcher && projectilePrefab != null && shootPoint != null)
+    void AttackTarget()
     {
-        GameObject arrow = Instantiate(projectilePrefab, shootPoint.position, Quaternion.identity);
-        Projectile proj = arrow.GetComponent<Projectile>();
-        if (proj != null)
-            proj.Initialize(enemy.transform, this); // ✅ use Initialize instead of SetTarget
+        if (currentTarget == null) return;
+
+        // Attack logic differs for Archer vs Swordsman
+        if (isArcher && projectilePrefab != null && shootPoint != null)
+        {
+            GameObject arrow = Instantiate(projectilePrefab, shootPoint.position, Quaternion.identity);
+            Projectile proj = arrow.GetComponent<Projectile>();
+            if (proj != null)
+                proj.Initialize(currentTarget, this);
+        }
+        else
+        {
+            // Melee
+            Troop enemy = currentTarget.GetComponent<Troop>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(attackDamage);
+            }
+
+            Base targetBaseObj = currentTarget.GetComponent<Base>();
+            if (targetBaseObj != null)
+            {
+                targetBaseObj.TakeDamage(attackDamage);
+            }
+        }
     }
-    else
-    {
-        enemy.TakeDamage(attackDamage);
-    }
-}
 
-
-    public void TakeDamage(float damage)
+    public void TakeDamage(float dmg)
     {
-        health -= damage;
+        health -= dmg;
         if (health <= 0f)
         {
             Destroy(gameObject);
@@ -111,24 +130,31 @@ public class Troop : MonoBehaviour
 
     void FindNearestEnemy()
     {
-        Troop[] allTroops = FindObjectsOfType<Troop>();
-        float minDistance = Mathf.Infinity;
-        Troop nearestEnemy = null;
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTroopTag);
+        float minDist = Mathf.Infinity;
+        Transform nearest = null;
 
-        foreach (Troop t in allTroops)
+        foreach (GameObject e in enemies)
         {
-            if (t == this) continue;
-            if (t.tag == this.tag) continue;
-
-            float dist = Vector3.Distance(transform.position, t.transform.position);
-            if (dist < minDistance)
+            if (e == null) continue;
+            float dist = Vector3.Distance(transform.position, e.transform.position);
+            if (dist < minDist)
             {
-                minDistance = dist;
-                nearestEnemy = t;
+                minDist = dist;
+                nearest = e.transform;
             }
         }
 
-        if (nearestEnemy != null)
-            currentTarget = nearestEnemy;
+        if (nearest != null)
+        {
+            currentTarget = nearest;
+        }
+        else
+        {
+            // No enemy troop? → aim for enemy base
+            GameObject baseObj = GameObject.FindGameObjectWithTag(enemyBaseTag);
+            if (baseObj != null)
+                currentTarget = baseObj.transform;
+        }
     }
 }
