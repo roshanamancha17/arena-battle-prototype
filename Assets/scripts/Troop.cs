@@ -9,11 +9,16 @@ public class Troop : MonoBehaviour
     public float attackRange = 4f;
     public float attackRate = 1f;
     public bool isArcher = false;
-    public bool isHorse = false; // ✅ NEW — horse flag
+    public bool isHorse = false; // ✅ Horse: ignores enemies, charges base
 
     [Header("Archer Settings")]
     public GameObject projectilePrefab;
     public Transform shootPoint;
+
+    [Header("Health Bar")]
+    public GameObject healthBarPrefab;
+    private HealthBar healthBar;
+    private float maxHealth;
 
     [Header("Targets")]
     public Transform targetBase;
@@ -28,7 +33,9 @@ public class Troop : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        maxHealth = health;
 
+        // Setup team tags
         if (CompareTag("PlayerTroop"))
         {
             enemyTroopTag = "EnemyTroop";
@@ -42,24 +49,35 @@ public class Troop : MonoBehaviour
 
         if (targetBase != null)
             agent.SetDestination(targetBase.position);
+
+        // ✅ Spawn floating health bar
+        if (healthBarPrefab != null)
+        {
+            GameObject hb = Instantiate(healthBarPrefab, transform.position + Vector3.up * 2f, Quaternion.identity);
+            healthBar = hb.GetComponent<HealthBar>();
+            healthBar.target = transform;
+            healthBar.SetHealth(health, maxHealth);
+        }
     }
 
     void Update()
     {
         if (health <= 0f)
         {
+            if (healthBar != null)
+                Destroy(healthBar.gameObject);
             Destroy(gameObject);
             return;
         }
 
-        // ✅ HORSE LOGIC: always charge directly to base, ignore enemy troops
+        // ✅ Horse units always charge to base
         if (isHorse)
         {
             HandleHorseBehavior();
             return;
         }
 
-        // Normal logic (swordsman or archer)
+        // 🗡️ Swordsman or Archer logic
         FindEnemyInRange();
 
         if (currentTarget == null)
@@ -73,9 +91,11 @@ public class Troop : MonoBehaviour
         }
 
         float dist = Vector3.Distance(transform.position, currentTarget.position);
+
         if (dist <= attackRange)
         {
             agent.isStopped = true;
+
             if (Time.time >= nextAttackTime)
             {
                 AttackTarget();
@@ -142,8 +162,13 @@ public class Troop : MonoBehaviour
     public void TakeDamage(float dmg)
     {
         health -= dmg;
+        if (healthBar != null)
+            healthBar.SetHealth(health, maxHealth);
+
         if (health <= 0f)
         {
+            if (healthBar != null)
+                Destroy(healthBar.gameObject);
             Destroy(gameObject);
         }
     }
