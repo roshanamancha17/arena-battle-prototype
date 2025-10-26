@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class Base : MonoBehaviour
 {
-    public float health = 1000f;
+    public float health = 500f;
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(float dmg)
     {
-        health -= amount;
-        if (health <= 0)
+        health -= dmg;
+        if (health <= 0f)
         {
-            Debug.Log(gameObject.name + " destroyed!");
+            Debug.Log($"{gameObject.name} destroyed!");
             Destroy(gameObject);
         }
     }

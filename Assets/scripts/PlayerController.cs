@@ -1,26 +1,46 @@
 using UnityEngine;
-using UnityEngine.AI;
 
 public class PlayerController : MonoBehaviour
 {
-    private NavMeshAgent agent;
-    private Camera cam;
+    [Header("Troop Prefabs")]
+    public GameObject swordsmanPrefab;
+    public GameObject archerPrefab;
 
-    void Start()
-    {
-        agent = GetComponent<NavMeshAgent>();
-        cam = Camera.main;
-    }
+    [Header("Spawn & Target")]
+    public Transform spawnPoint;
+    public Transform enemyBase;
+
+    [Header("Energy Settings")]
+    public int energy = 10;
+    public int swordsmanCost = 3;
+    public int archerCost = 5;
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            SpawnTroop(swordsmanPrefab, swordsmanCost);
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+            SpawnTroop(archerPrefab, archerCost);
+    }
+
+    void SpawnTroop(GameObject prefab, int cost)
+    {
+        if (energy < cost)
         {
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                agent.SetDestination(hit.point);
-            }
+            Debug.Log("Not enough energy!");
+            return;
+        }
+
+        energy -= cost;
+
+        GameObject troopObj = Instantiate(prefab, spawnPoint.position, Quaternion.identity);
+        Troop troop = troopObj.GetComponent<Troop>();
+
+        if (troop != null && enemyBase != null)
+        {
+            // ✅ Assign the Transform directly (NavMeshAgent uses Transform)
+            troop.targetBase = enemyBase;
         }
     }
 }

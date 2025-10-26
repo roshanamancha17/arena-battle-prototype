@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 9c1aa6ae5a5723e47b6cd46134ce54f9, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -119,6 +119,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &55202039
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 55202040}
+  m_Layer: 0
+  m_Name: EnemySpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &55202040
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55202039}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.13, y: 0, z: -0.06}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &227064883
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,9 +419,10 @@ GameObject:
   - component: {fileID: 390436732}
   - component: {fileID: 390436731}
   - component: {fileID: 390436730}
+  - component: {fileID: 390436734}
   m_Layer: 0
   m_Name: BaseA
-  m_TagString: Untagged
+  m_TagString: PlayerBase
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -487,6 +519,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &390436734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 390436729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a96a0b60b739bf48ae8fd3ac8cc8824, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Base
+  health: 1000
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -775,7 +820,7 @@ Transform:
   m_GameObject: {fileID: 461724605}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.18, y: 0.032, z: -0.08686}
+  m_LocalPosition: {x: -4.27, y: 0.032, z: -0.08686}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -993,6 +1038,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &495461028
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 911551632884370749, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 15.32256
+      objectReference: {fileID: 0}
+    - target: {fileID: 911551632884370749, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 911551632884370749, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -9.477476
+      objectReference: {fileID: 0}
+    - target: {fileID: 911551632884370749, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 911551632884370749, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 911551632884370749, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 911551632884370749, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 911551632884370749, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 911551632884370749, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 911551632884370749, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1572870472998349972, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+      propertyPath: m_Name
+      value: Troop_Swordsman (2)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1042,6 +1144,112 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &843491868
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 843491870}
+  - component: {fileID: 843491869}
+  m_Layer: 0
+  m_Name: EnemySpawner
+  m_TagString: EnemyBase
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &843491869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 843491868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 310f727be6a646a418057aa8e7a30016, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  enemySwordsmanPrefab: {fileID: 1572870472998349972, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+  enemyArcherPrefab: {fileID: 13429732812264147, guid: 9251dc7943e499f4488936aea2dd0c19, type: 3}
+  spawnPoint: {fileID: 55202040}
+  playerBase: {fileID: 390436733}
+  spawnInterval: 5
+--- !u!4 &843491870
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 843491868}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.43215, y: 0, z: 3.62129}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &932206668
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 911551632884370749, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -8.993697
+      objectReference: {fileID: 0}
+    - target: {fileID: 911551632884370749, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 911551632884370749, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 15.39588
+      objectReference: {fileID: 0}
+    - target: {fileID: 911551632884370749, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 911551632884370749, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 911551632884370749, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 911551632884370749, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 911551632884370749, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 911551632884370749, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 911551632884370749, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1572870472998349972, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
+      propertyPath: m_Name
+      value: Troop_Swordsman (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
 --- !u!1 &1071254232
 GameObject:
   m_ObjectHideFlags: 0
@@ -1054,9 +1262,10 @@ GameObject:
   - component: {fileID: 1071254235}
   - component: {fileID: 1071254234}
   - component: {fileID: 1071254233}
+  - component: {fileID: 1071254237}
   m_Layer: 0
   m_Name: BaseB
-  m_TagString: Untagged
+  m_TagString: EnemyBase
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1153,6 +1362,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1071254237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071254232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a96a0b60b739bf48ae8fd3ac8cc8824, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Base
+  health: 1000
 --- !u!1 &1355983910
 GameObject:
   m_ObjectHideFlags: 0
@@ -1166,7 +1388,7 @@ GameObject:
   - component: {fileID: 1355983913}
   - component: {fileID: 1355983912}
   m_Layer: 5
-  m_Name: Archer
+  m_Name: ArcherButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1235,7 +1457,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1355983913}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1589819352}
+        m_TargetAssemblyTypeName: Spawner, Assembly-CSharp
+        m_MethodName: SpawnArcher
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1355983913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1307,6 +1541,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 546e2b3ff68d6e542a8e3310a9ee0b7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  swordsmanPrefab: {fileID: 0}
+  archerPrefab: {fileID: 0}
+  spawnPoint: {fileID: 0}
+  enemyBase: {fileID: 0}
+  energy: 10
+  swordsmanCost: 3
+  archerCost: 5
 --- !u!195 &1484585410
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1434,8 +1675,8 @@ GameObject:
   - component: {fileID: 1589819353}
   - component: {fileID: 1589819352}
   m_Layer: 0
-  m_Name: Spawner
-  m_TagString: Untagged
+  m_Name: PlayerSpawner
+  m_TagString: PlayerBase
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1453,7 +1694,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Spawner
   swordsmanPrefab: {fileID: 7891656901145052853, guid: 81624240842a0654e84ae143eb4bc0e5, type: 3}
-  archerPrefab: {fileID: 7891656901145052853, guid: 81624240842a0654e84ae143eb4bc0e5, type: 3}
+  archerPrefab: {fileID: 5598929648485672458, guid: f49b3c3e4762bbb45983ef59cbed1aca, type: 3}
   horsePrefab: {fileID: 1572870472998349972, guid: a40f8753486b7304ebc039b0a1f9c41b, type: 3}
   spawnPoint: {fileID: 461724606}
   enemyBase: {fileID: 1071254236}
@@ -1509,7 +1750,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2779c4d4d8d01c84fb07ae400442bd37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
-  target: {fileID: 0}
+  target: {fileID: 390436733}
 --- !u!195 &1618358381
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2177,6 +2418,10 @@ SceneRoots:
   - {fileID: 1484585414}
   - {fileID: 1618358385}
   - {fileID: 1589819353}
+  - {fileID: 843491870}
   - {fileID: 461724606}
+  - {fileID: 55202040}
   - {fileID: 227064887}
   - {fileID: 494749505}
+  - {fileID: 932206668}
+  - {fileID: 495461028}

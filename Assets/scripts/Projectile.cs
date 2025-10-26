@@ -25,7 +25,8 @@ public class Projectile : MonoBehaviour
     {
         if (hasHit) return;
 
-        if (target == null)
+        // ❌ If target or shooter has been destroyed → destroy projectile safely
+        if (target == null || shooter == null)
         {
             Destroy(gameObject);
             return;
@@ -48,21 +49,23 @@ public class Projectile : MonoBehaviour
         if (hasHit) return;
         hasHit = true;
 
-        if (target != null)
+        if (target == null || shooter == null)
         {
-            // ✅ If the target has Troop component & not same team → damage
-            Troop t = target.GetComponent<Troop>();
-            if (t != null && t.tag != shooter.tag)
-            {
-                t.TakeDamage(damage);
-            }
+            Destroy(gameObject);
+            return;
+        }
 
-            // ✅ If the target is a Base (enemy base)
-            Base baseObj = target.GetComponent<Base>();
-            if (baseObj != null && target.tag != shooter.tag)
-            {
-                baseObj.TakeDamage(damage);
-            }
+        // ✅ Safely check before accessing components
+        Troop targetTroop = target.GetComponent<Troop>();
+        if (targetTroop != null && targetTroop != shooter && target.tag != shooter.tag)
+        {
+            targetTroop.TakeDamage(damage);
+        }
+
+        Base baseObj = target.GetComponent<Base>();
+        if (baseObj != null && target.tag != shooter.tag)
+        {
+            baseObj.TakeDamage(damage);
         }
 
         Destroy(gameObject);
@@ -70,10 +73,10 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (hasHit) return;
+        if (hasHit || shooter == null) return;
 
         Troop t = other.GetComponent<Troop>();
-        if (t != null && t.tag != shooter.tag)
+        if (t != null && t != shooter && other.tag != shooter.tag)
         {
             t.TakeDamage(damage);
             hasHit = true;
