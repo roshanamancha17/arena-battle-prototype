@@ -8,6 +8,7 @@ TagManager:
   - EnemyTroop
   - EnemyBase
   - PlayerBase
+  - WorldCanvas
   layers:
   - Default
   - TransparentFX

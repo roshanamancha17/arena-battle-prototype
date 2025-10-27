@@ -7,14 +7,13 @@ public class Base : MonoBehaviour
     private float currentHealth;
 
     [Header("Health Bar")]
-    public GameObject healthBarPrefab;   // drag prefab here in Inspector
+    public GameObject healthBarPrefab;
     private HealthBar healthBar;
 
     void Start()
     {
         currentHealth = maxHealth;
 
-        // ✅ Find the tagged world canvas (NOT cloned ones)
         GameObject canvasObj = GameObject.FindGameObjectWithTag("WorldCanvas");
         Canvas worldCanvas = canvasObj != null ? canvasObj.GetComponent<Canvas>() : null;
 
@@ -29,7 +28,6 @@ public class Base : MonoBehaviour
                 Quaternion.identity
             );
 
-            // ✅ Attach to main world canvas only
             if (worldCanvas != null)
                 hb.transform.SetParent(worldCanvas.transform, false);
 

@@ -9,7 +9,7 @@ public class Troop : MonoBehaviour
     public float attackRange = 4f;
     public float attackRate = 1f;
     public bool isArcher = false;
-    public bool isHorse = false; // ✅ Horse: ignores enemies, charges base
+    public bool isHorse = false;
 
     [Header("Archer Settings")]
     public GameObject projectilePrefab;
@@ -21,11 +21,11 @@ public class Troop : MonoBehaviour
     private float maxHealth;
 
     [Header("Targets")]
-    public Transform targetBase;
+    public Transform targetBase; // assigned by spawner
 
     private NavMeshAgent agent;
-    private float nextAttackTime = 0f;
     private Transform currentTarget;
+    private float nextAttackTime = 0f;
 
     private string enemyTroopTag;
     private string enemyBaseTag;
@@ -35,7 +35,7 @@ public class Troop : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         maxHealth = health;
 
-        // Setup team tags
+        // Determine team alignment
         if (CompareTag("PlayerTroop"))
         {
             enemyTroopTag = "EnemyTroop";
@@ -47,16 +47,29 @@ public class Troop : MonoBehaviour
             enemyBaseTag = "PlayerBase";
         }
 
+        // Go toward enemy base initially
         if (targetBase != null)
             agent.SetDestination(targetBase.position);
 
-        // ✅ Spawn floating health bar
+        // ✅ Find World Canvas
+        GameObject canvasObj = GameObject.FindGameObjectWithTag("WorldCanvas");
+        Canvas worldCanvas = canvasObj != null ? canvasObj.GetComponent<Canvas>() : null;
+
+        // ✅ Spawn health bar under the world canvas
         if (healthBarPrefab != null)
         {
             GameObject hb = Instantiate(healthBarPrefab, transform.position + Vector3.up * 2f, Quaternion.identity);
+
+            if (worldCanvas != null)
+                hb.transform.SetParent(worldCanvas.transform, false);
+
             healthBar = hb.GetComponent<HealthBar>();
-            healthBar.target = transform;
-            healthBar.SetHealth(health, maxHealth);
+            if (healthBar != null)
+            {
+                healthBar.target = transform;
+                healthBar.SetHealth(health, maxHealth);
+                healthBar.SetColorByTag(gameObject.tag);
+            }
         }
     }
 
@@ -70,14 +83,12 @@ public class Troop : MonoBehaviour
             return;
         }
 
-        // ✅ Horse units always charge to base
         if (isHorse)
         {
             HandleHorseBehavior();
             return;
         }
 
-        // 🗡️ Swordsman or Archer logic
         FindEnemyInRange();
 
         if (currentTarget == null)
@@ -102,6 +113,7 @@ public class Troop : MonoBehaviour
                 nextAttackTime = Time.time + 1f / attackRate;
             }
 
+            // Smooth rotation toward target
             Vector3 dir = currentTarget.position - transform.position;
             dir.y = 0;
             if (dir != Vector3.zero)
@@ -121,8 +133,8 @@ public class Troop : MonoBehaviour
         agent.isStopped = false;
         agent.SetDestination(targetBase.position);
 
-        float distToBase = Vector3.Distance(transform.position, targetBase.position);
-        if (distToBase <= attackRange)
+        float dist = Vector3.Distance(transform.position, targetBase.position);
+        if (dist <= attackRange)
         {
             agent.isStopped = true;
             if (Time.time >= nextAttackTime)
