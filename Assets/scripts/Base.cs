@@ -14,10 +14,13 @@ public class Base : MonoBehaviour
     {
         currentHealth = maxHealth;
 
-        // ✅ Find the world canvas if it exists
-        Canvas worldCanvas = FindObjectOfType<Canvas>();
+        // ✅ Find the tagged world canvas (NOT cloned ones)
+        GameObject canvasObj = GameObject.FindGameObjectWithTag("WorldCanvas");
+        Canvas worldCanvas = canvasObj != null ? canvasObj.GetComponent<Canvas>() : null;
 
-        // ✅ Only spawn the bar if we actually have a prefab
+        if (worldCanvas == null)
+            Debug.LogWarning("⚠️ No Canvas with tag 'WorldCanvas' found!");
+
         if (healthBarPrefab != null)
         {
             GameObject hb = Instantiate(
@@ -26,7 +29,7 @@ public class Base : MonoBehaviour
                 Quaternion.identity
             );
 
-            // ✅ Make sure it’s under the canvas so it becomes visible
+            // ✅ Attach to main world canvas only
             if (worldCanvas != null)
                 hb.transform.SetParent(worldCanvas.transform, false);
 
@@ -35,6 +38,7 @@ public class Base : MonoBehaviour
             {
                 healthBar.target = transform;
                 healthBar.SetHealth(currentHealth, maxHealth);
+                healthBar.SetColorByTag(gameObject.tag);
             }
         }
         else

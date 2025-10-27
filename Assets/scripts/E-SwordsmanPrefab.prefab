@@ -154,6 +154,8 @@ MonoBehaviour:
   attackRange: 5
   attackRate: 1
   isArcher: 0
+  isHorse: 0
   projectilePrefab: {fileID: 1413292876515233178, guid: b3f7d89a0dee07042bd63b19db324a2a, type: 3}
   shootPoint: {fileID: 0}
+  healthBarPrefab: {fileID: 3685550745506438254, guid: 46fb260f68522a14e9e3c5e57c1b79f5, type: 3}
   targetBase: {fileID: 0}
