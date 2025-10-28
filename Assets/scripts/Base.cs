@@ -14,12 +14,14 @@ public class Base : MonoBehaviour
     {
         currentHealth = maxHealth;
 
+        // Find the world canvas (tagged "WorldCanvas")
         GameObject canvasObj = GameObject.FindGameObjectWithTag("WorldCanvas");
         Canvas worldCanvas = canvasObj != null ? canvasObj.GetComponent<Canvas>() : null;
 
         if (worldCanvas == null)
             Debug.LogWarning("⚠️ No Canvas with tag 'WorldCanvas' found!");
 
+        // Spawn the health bar
         if (healthBarPrefab != null)
         {
             GameObject hb = Instantiate(
@@ -52,6 +54,19 @@ public class Base : MonoBehaviour
             healthBar.SetHealth(currentHealth, maxHealth);
 
         if (currentHealth <= 0f)
+        {
+            // Trigger win/lose state
+            LevelManager manager = FindObjectOfType<LevelManager>();
+            if (manager != null)
+            {
+                if (CompareTag("PlayerBase"))
+                    manager.ShowLose();
+                else if (CompareTag("EnemyBase"))
+                    manager.ShowWin();
+            }
+
+            // Destroy the base
             Destroy(gameObject);
+        }
     }
 }

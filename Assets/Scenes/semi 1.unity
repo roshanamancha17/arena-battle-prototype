@@ -1516,6 +1516,52 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 60e5e16bf9fdef746a0e54842cdcf2b4, type: 2}
   m_BuildHeightMesh: 0
+--- !u!1 &800218350
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 800218352}
+  - component: {fileID: 800218351}
+  m_Layer: 0
+  m_Name: LevelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &800218351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 800218350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c761af456698e2f45a66bade03b32474, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelManager
+  winPanel: {fileID: 470657737}
+  losePanel: {fileID: 1969080822}
+--- !u!4 &800218352
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 800218350}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.35162, y: 0, z: 1.5602198}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &851267509
 GameObject:
   m_ObjectHideFlags: 0
@@ -2657,6 +2703,9 @@ MonoBehaviour:
   horsePrefab: {fileID: 2269327922365052336, guid: fab14052fbf6c464295efe516898c34f, type: 3}
   spawnPoint: {fileID: 175483079}
   enemyBase: {fileID: 398054971}
+  spawnEffectPrefab: {fileID: 6423429973324796107, guid: de62aa673b5f74d43acb83aaca1f6b64, type: 3}
+  spawnSound: {fileID: 8300000, guid: 81652031b64c342cc8dbc59c138d77c5, type: 3}
+  soundVolume: 0.8
   maxEnergy: 10
   currentEnergy: 0
   energyRegenRate: 1
@@ -2868,13 +2917,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1926057947}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.05447634, z: -0, w: 0.99851507}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -6.87, y: 0, z: -10.18}
   m_LocalScale: {x: 1, y: 1, z: 9.2948}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1038656670}
-  m_LocalEulerAnglesHint: {x: 0, y: -6.246, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1926057949
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3165,4 +3214,5 @@ SceneRoots:
   - {fileID: 1228183299}
   - {fileID: 2133884264}
   - {fileID: 1897384534}
+  - {fileID: 800218352}
   - {fileID: 1038656670}

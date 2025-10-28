@@ -6,6 +6,11 @@ public class Projectile : MonoBehaviour
     public float damage = 10f;
     public float lifetime = 5f;
 
+    [Header("Impact Effects")]
+    public GameObject impactEffectPrefab;  // ✅ assign ArrowImpact prefab
+    public AudioClip hitSound;             // ✅ assign hit sound
+    public float hitVolume = 0.8f;
+
     private Transform target;
     private Troop shooter;
     private bool hasHit = false;
@@ -25,7 +30,6 @@ public class Projectile : MonoBehaviour
     {
         if (hasHit) return;
 
-        // ❌ If target or shooter has been destroyed → destroy projectile safely
         if (target == null || shooter == null)
         {
             Destroy(gameObject);
@@ -55,7 +59,14 @@ public class Projectile : MonoBehaviour
             return;
         }
 
-        // ✅ Safely check before accessing components
+        // ✅ Play hit particle and sound
+        if (impactEffectPrefab)
+            Instantiate(impactEffectPrefab, transform.position, Quaternion.identity);
+
+        if (hitSound)
+            AudioSource.PlayClipAtPoint(hitSound, transform.position, hitVolume);
+
+        // Apply damage
         Troop targetTroop = target.GetComponent<Troop>();
         if (targetTroop != null && targetTroop != shooter && target.tag != shooter.tag)
         {
@@ -76,17 +87,23 @@ public class Projectile : MonoBehaviour
         if (hasHit || shooter == null) return;
 
         Troop t = other.GetComponent<Troop>();
-        if (t != null && t != shooter && other.tag != shooter.tag)
-        {
-            t.TakeDamage(damage);
-            hasHit = true;
-            Destroy(gameObject);
-        }
-
         Base b = other.GetComponent<Base>();
-        if (b != null && other.tag != shooter.tag)
+
+        if ((t != null && t != shooter && other.tag != shooter.tag) ||
+            (b != null && other.tag != shooter.tag))
         {
-            b.TakeDamage(damage);
+            // ✅ Play hit effects
+            if (impactEffectPrefab)
+                Instantiate(impactEffectPrefab, transform.position, Quaternion.identity);
+
+            if (hitSound)
+                AudioSource.PlayClipAtPoint(hitSound, transform.position, hitVolume);
+
+            if (t != null)
+                t.TakeDamage(damage);
+            else if (b != null)
+                b.TakeDamage(damage);
+
             hasHit = true;
             Destroy(gameObject);
         }
