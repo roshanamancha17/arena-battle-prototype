@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +10,11 @@ public class GameManager : MonoBehaviour
     public GameObject losePanel;
 
     private bool gameEnded = false;
+
+    void Start()
+    {
+        Time.timeScale = 1f; // ensure game runs normally when level starts
+    }
 
     void Update()
     {
@@ -30,16 +36,29 @@ public class GameManager : MonoBehaviour
 
         if (playerWon)
         {
-            if (winPanel != null) winPanel.SetActive(true);
+            if (winPanel) winPanel.SetActive(true);
             Debug.Log("You Win!");
         }
         else
         {
-            if (losePanel != null) losePanel.SetActive(true);
+            if (losePanel) losePanel.SetActive(true);
             Debug.Log("You Lose!");
         }
 
-        // Optional: freeze gameplay
-        Time.timeScale = 0f;
+        Time.timeScale = 0f; // Pause game
+    }
+
+    public void NextLevel()
+    {
+        Time.timeScale = 1f;
+        int nextScene = SceneManager.GetActiveScene().buildIndex + 1;
+
+        // If no more scenes, restart from level 1 or show main menu later
+        if (nextScene >= SceneManager.sceneCountInBuildSettings)
+        {
+            nextScene = 0; // restart game or change later
+        }
+
+        SceneManager.LoadScene(nextScene);
     }
 }
