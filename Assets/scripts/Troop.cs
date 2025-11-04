@@ -27,8 +27,9 @@ public class Troop : MonoBehaviour
     private Transform currentTarget;
     private float nextAttackTime = 0f;
 
-    private string enemyTroopTag;
-    private string enemyBaseTag;
+    public string enemyTroopTag { get; private set; }
+    public string enemyBaseTag { get; private set; }
+
 
     void Start()
     {
@@ -213,4 +214,16 @@ public class Troop : MonoBehaviour
                 currentTarget = baseObj.transform;
         }
     }
+
+    public void SetLastAttackTime(float time)
+    {
+        nextAttackTime = time;
+    }
+
+    public float GetLastAttackTime()
+    {
+        return nextAttackTime;
+    }
+
+
 }

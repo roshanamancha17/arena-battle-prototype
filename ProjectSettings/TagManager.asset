@@ -9,6 +9,7 @@ TagManager:
   - EnemyBase
   - PlayerBase
   - WorldCanvas
+  - PlayerPlatoonSpawner
   layers:
   - Default
   - TransparentFX
